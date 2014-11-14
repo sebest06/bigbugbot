@@ -112,7 +112,7 @@ void event_privmsg(irc_session_t * session, const char * event, const char * ori
     sql::ResultSet *res;
 
     driver = get_driver_instance();
-    con = driver->connect("tcp://127.0.0.1:3306", "root", "");
+    con = driver->connect(direccion, usuario, password);
 
 
     if ( !origin || count != 2 )

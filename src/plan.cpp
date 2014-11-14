@@ -74,14 +74,17 @@ std::vector<std::string> Plan::tareas(int idUsuario,int idProyecto)
 
         char querysql[256];
 
-    sprintf (querysql, "SELECT proyecto.id, proyecto.name, proyecto.desc\
-        FROM `projekte` as proyecto,`projekte_assigned`\
-        as asignado where proyecto.id = asignado.projekt\
-        and asignado.user = %d and proyecto.end = 0;", id);
+    sprintf (querysql, "SELECT tasklist.name, tasklist.desc\
+        FROM tasklist, projekte_assigned, user\
+        WHERE user.id =%d\
+        AND tasklist.project =%d\
+        AND tasklist.status =1\
+        AND projekte_assigned.projekt = tasklist.project\
+        AND projekte_assigned.user = user.id", idUsuario,idProyecto);
     res = stmt->executeQuery(querysql);
     while (res->next()) {
-        salida.push_back("[COLOR=RED]ID:[/COLOR] [B]"+res->getString(1)+"[/B] [COLOR=RED]Proyecto:[/COLOR] [B]" + res->getString(2) + "[/B]");
-        salida.push_back(res->getString(3));
+        salida.push_back("[COLOR=RED]Tarea:[/COLOR]" + res->getString(1));
+        salida.push_back(res->getString(2));
     }
 
 
