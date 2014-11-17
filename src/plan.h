@@ -21,7 +21,10 @@ class Plan
     private:
         int userId(std::string usuario);
         std::vector<std::string> proyectos(int id);
-        std::vector<std::string> tareas(int idUsuario,int idProyecto);
+        std::vector<std::string> help(void);
+        std::vector<std::string> hitos(int idUsuario,int idProyecto);
+        std::vector<std::string> hitoOK(int idUsuario,int idTarea);
+        std::vector<std::string> hitoADD(int idUsuario,std::vector<std::string> argumentos);
         sql::Driver *driver;
         sql::Connection *con;
         sql::Statement *stmt;

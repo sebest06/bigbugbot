@@ -19,6 +19,8 @@ std::vector<std::string> Plan::procesar(std::string usuario, const char * params
     char *pch;
     int id;
     std::vector<std::string> salida;
+    std::vector<std::string> argumentos;
+
 
     pch = strtok ((char *)params," ,.-/\r\n");
     pch = strtok (NULL," ,.-/\r\n");
@@ -30,12 +32,27 @@ std::vector<std::string> Plan::procesar(std::string usuario, const char * params
     {
         salida = proyectos(id);
     }
-    else if(strcmp(pch,"tareas") == 0)
+    else if(strcmp(pch,"hitos") == 0)
     {
         pch = strtok (NULL," ,.-/\r\n");
         if(pch == NULL){return salida;}
-        salida = tareas(id,atoi(pch));
+        salida = hitos(id,atoi(pch));
     }
+    else if(strcmp(pch,"help") == 0)
+    {
+        salida = help();
+    }
+    else if(strcmp(pch,"hitoOK") == 0)
+    {
+        pch = strtok (NULL," ,.-/\r\n");
+        if(pch == NULL){return salida;}
+        salida = hitoOK(id,atoi(pch));
+    }
+    else if(strcmp(pch,"hitoADD") == 0)
+    {
+
+    }
+
     return salida;
 }
 int Plan::userId(std::string usuario)
@@ -68,13 +85,13 @@ std::vector<std::string> Plan::proyectos(int id)
     return salida;
 }
 
-std::vector<std::string> Plan::tareas(int idUsuario,int idProyecto)
+std::vector<std::string> Plan::hitos(int idUsuario,int idProyecto)
 {
     std::vector<std::string> salida;
 
         char querysql[256];
 
-    sprintf (querysql, "SELECT tasklist.name, tasklist.desc\
+    sprintf (querysql, "SELECT tasklist.name, tasklist.desc, tasklist.id\
         FROM tasklist, projekte_assigned, user\
         WHERE user.id =%d\
         AND tasklist.project =%d\
@@ -83,10 +100,44 @@ std::vector<std::string> Plan::tareas(int idUsuario,int idProyecto)
         AND projekte_assigned.user = user.id", idUsuario,idProyecto);
     res = stmt->executeQuery(querysql);
     while (res->next()) {
-        salida.push_back("[COLOR=RED]Tarea:[/COLOR]" + res->getString(1));
+        salida.push_back("[COLOR=RED]ID:[/COLOR] [B]"+res->getString(3)+"[/B] [COLOR=RED]Hito:[/COLOR] [B]" + res->getString(1) + "[/B]");
         salida.push_back(res->getString(2));
     }
 
 
     return salida;
 }
+std::vector<std::string> Plan::hitoOK(int idUsuario,int idHito)
+{
+    std::vector<std::string> salida;
+    char querysql[256];
+    int count;
+    sprintf (querysql, "update tasklist t\
+    join projekte_assigned pa on (t.project = pa.projekt)\
+    set status = 0\
+    WHERE pa.user = %d  and t.id = %d and t.status = 1", idUsuario,idHito);
+    count = stmt->executeUpdate(querysql);
+
+    sprintf (querysql, "se actualizar %d registros", count);
+    salida.push_back(querysql);
+    return salida;
+}
+
+std::vector<std::string> Plan::hitoADD(int idUsuario, std::vector<std::string> argumentos)
+{
+    std::vector<std::string> salida;
+    return salida;
+}
+
+std::vector<std::string> Plan::help(void)
+{
+    std::vector<std::string> salida;
+    salida.push_back("[B]proyectos[/B] lista todos los proyectos que tenemos asignados");
+    salida.push_back("[B]hitos <ProyectoID>[/B] lista todos los hitos incompletos del proyecto cuyo id es <ID>");
+    salida.push_back("[B]hitoOK <HitoID>[/B] Marca al hito cuyo id es <HitoID> como alcanzado");
+    salida.push_back("[B]hitoADD <ProyectoID> hito=\"<Titulo>\" desc=\"<Descripcion>\"[/B] Agrega un hito al proyecto <ProyectoID>, con el titulo <Titulo> y la descripcion <Descripcion>");
+
+    return salida;
+}
+
+

@@ -46,3 +46,46 @@
 	<cppconn/resultset.h>
 	<cppconn/statement.h>
 
+1416083098 source:/home/sebas/Proyectos/bigbugbot/src/main.cpp
+	<stdio.h>
+	<string.h>
+	<string>
+	<iostream>
+	<map>
+	<errno.h>
+	<stdarg.h>
+	<stdlib.h>
+	"../include/libircclient.h"
+	<mysql_driver.h>
+	<mysql_connection.h>
+	<cppconn/driver.h>
+	<cppconn/exception.h>
+	<cppconn/resultset.h>
+	<cppconn/statement.h>
+	"plan.h"
+
+1416066186 /home/sebas/Proyectos/bigbugbot/include/libircclient.h
+	<stdlib.h>
+	<sys/select.h>
+	<winsock2.h>
+	<ws2tcpip.h>
+	"libirc_errors.h"
+	"libirc_events.h"
+	"libirc_options.h"
+
+1416066186 /home/sebas/Proyectos/bigbugbot/include/libirc_errors.h
+
+1416066186 /home/sebas/Proyectos/bigbugbot/include/libirc_events.h
+
+1416066186 /home/sebas/Proyectos/bigbugbot/include/libirc_options.h
+
+1416177040 /home/sebas/Proyectos/bigbugbot/src/plan.h
+	<string>
+	<vector>
+	<mysql_driver.h>
+	<mysql_connection.h>
+	<cppconn/driver.h>
+	<cppconn/exception.h>
+	<cppconn/resultset.h>
+	<cppconn/statement.h>
+
